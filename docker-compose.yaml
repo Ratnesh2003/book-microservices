@@ -1,0 +1,69 @@
+version: '3.9'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb:/data/db
+
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra:/var/lib/cassandra
+    environment:
+      - CASSANDRA_KEYSPACE=loan
+      - CASSANDRA_USERNAME=cassandra
+      - CASSANDRA_PASSWORD=cassandra
+      - CASSANDRA_CONTACT_POINTS=localhost
+      - CASSANDRA_LOCAL_DATA_CENTER=datacenter1
+    healthcheck:
+      test: "cqlsh -u cassandra -p cassandra -e 'DESCRIBE KEYSPACES'"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  cassandra-load-keyspace:
+    container_name: cassandra-load-keyspace
+    image: cassandra:latest
+    depends_on:
+      cassandra:
+        condition: service_healthy
+    volumes:
+      - ./cassandra-init.cql:/schema.cql
+    command: /bin/bash -c "echo loading cassandra keyspace && cqlsh cassandra -f /schema.cql"
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: book_inventory
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Abcd@1234
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    ports:
+      - "8181:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command:
+      - start-dev
+    volumes:
+      - keycloak:/opt/keycloak/data
+
+volumes:
+    mongodb:
+    cassandra:
+    postgres:
+    keycloak:

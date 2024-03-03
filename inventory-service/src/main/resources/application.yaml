@@ -1,0 +1,22 @@
+spring:
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/book_inventory
+    username: postgres
+    password: Abcd@1234
+  application:
+    name: inventory-service
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:password@localhost:8761/eureka/
+

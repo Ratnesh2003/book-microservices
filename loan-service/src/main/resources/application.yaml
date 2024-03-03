@@ -1,0 +1,19 @@
+spring:
+  cassandra:
+    keyspace-name: loan
+    schema-action: create_if_not_exists
+    port: 9042
+    username: cassandra
+    password: cassandra
+    contact-points: localhost
+    local-datacenter: datacenter1
+  application:
+    name: loan-service
+
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:password@localhost:8761/eureka/
