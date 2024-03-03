@@ -62,6 +62,12 @@ services:
     volumes:
       - keycloak:/opt/keycloak/data
 
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+
 volumes:
     mongodb:
     cassandra:

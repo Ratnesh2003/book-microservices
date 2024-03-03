@@ -1,6 +1,5 @@
 package org.ratnesh.loanservice.controller;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ratnesh.loanservice.dto.ErrorDTO;
