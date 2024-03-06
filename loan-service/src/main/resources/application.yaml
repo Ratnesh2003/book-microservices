@@ -9,6 +9,17 @@ spring:
     local-datacenter: datacenter1
   application:
     name: loan-service
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: event:org.ratnesh.loanservice.event.LoanNotification
+
+
+
 management:
   tracing:
     sampling:

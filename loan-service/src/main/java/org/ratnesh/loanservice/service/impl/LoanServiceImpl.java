@@ -5,10 +5,12 @@ import org.ratnesh.loanservice.dto.InventoryRequestDTO;
 import org.ratnesh.loanservice.dto.LoanRequestDTO;
 import org.ratnesh.loanservice.dto.LoanResponseDTO;
 import org.ratnesh.loanservice.entity.Loan;
+import org.ratnesh.loanservice.event.LoanNotification;
 import org.ratnesh.loanservice.exception.BookNotAvailableException;
 import org.ratnesh.loanservice.exception.LoanNotFoundException;
 import org.ratnesh.loanservice.repository.LoanRepository;
 import org.ratnesh.loanservice.service.LoanService;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -21,6 +23,7 @@ public class LoanServiceImpl implements LoanService {
 
     private final LoanRepository loanRepository;
     private final WebClient.Builder webClientBuilder;
+    private final KafkaTemplate<String, LoanNotification> kafkaTemplate;
 
     @Override
     public String createLoan(LoanRequestDTO request) {
@@ -38,6 +41,7 @@ public class LoanServiceImpl implements LoanService {
         updateBookCount(request.getBookId(), bookCount - 1);
 
         loan = loanRepository.save(loan);
+        kafkaTemplate.send("loan-notification", new LoanNotification(loan));
         return loan.getId();
     }
 
