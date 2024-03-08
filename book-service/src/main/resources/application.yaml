@@ -10,7 +10,7 @@ eureka:
         service-url:
             defaultZone: http://eureka:password@localhost:8761/eureka/
 server:
-    port: 0
+    port: 8282
 
 management:
     tracing:
@@ -19,3 +19,7 @@ management:
     zipkin:
       tracing:
         endpoint: http://localhost:9411/api/v2/spans
+    endpoints:
+      web:
+        exposure:
+            include: prometheus

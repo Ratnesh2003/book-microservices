@@ -7,6 +7,8 @@ services:
       - "27017:27017"
     volumes:
       - mongodb:/data/db
+    networks:
+      - book-network
 
   cassandra:
     image: cassandra:latest
@@ -26,6 +28,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    networks:
+      - book-network
 
   cassandra-load-keyspace:
     container_name: cassandra-load-keyspace
@@ -35,6 +39,8 @@ services:
         condition: service_healthy
     volumes:
       - ./cassandra-init.cql:/schema.cql
+    networks:
+      - book-network
     command: /bin/bash -c "echo loading cassandra keyspace && cqlsh cassandra -f /schema.cql"
 
   postgres:
@@ -48,6 +54,8 @@ services:
       POSTGRES_PASSWORD: Abcd@1234
     volumes:
       - postgres:/var/lib/postgresql/data
+    networks:
+      - book-network
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -61,12 +69,16 @@ services:
       - start-dev
     volumes:
       - keycloak:/opt/keycloak/data
+    networks:
+      - book-network
 
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
     ports:
       - "9411:9411"
+    networks:
+      - book-network
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -76,6 +88,8 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
+    networks:
+      - book-network
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -92,9 +106,41 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    networks:
+      - book-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - book-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    links:
+      - prometheus:prometheus
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: password
+    networks:
+      - book-network
+
 
 volumes:
     mongodb:
     cassandra:
     postgres:
     keycloak:
+
+networks:
+  book-network:
+    driver: bridge
