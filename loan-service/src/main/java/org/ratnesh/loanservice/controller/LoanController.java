@@ -30,7 +30,7 @@ public class LoanController {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorDTO(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/return/{id}")
     public ResponseEntity<?> returnLoan(@PathVariable String id) {
         try {
             loanService.returnLoan(id);

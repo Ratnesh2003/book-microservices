@@ -7,9 +7,9 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://localhost:5432/book_inventory
-    username: postgres
-    password: Abcd@1234
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:book_inventory}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:Abcd@1234}
   application:
     name: inventory-service
 management:
