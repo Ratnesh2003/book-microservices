@@ -30,7 +30,13 @@ management:
   endpoints:
     web:
       exposure:
-        include: prometheus
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
 
 server:
   port: 8484
@@ -39,3 +45,15 @@ eureka:
   client:
     service-url:
       defaultZone: http://eureka:password@localhost:8761/eureka/
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventory:
+        registerHealthIndicator: true
+        event-consumer-buffer-size: 10
+        sliding-window-size: 10
+        sliding-window-type: COUNT_BASED
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true

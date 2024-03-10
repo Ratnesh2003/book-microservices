@@ -1,5 +1,6 @@
 package org.ratnesh.loanservice.controller;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ratnesh.loanservice.dto.ErrorDTO;
@@ -19,12 +20,14 @@ public class LoanController {
     private final LoanService loanService;
 
     @PostMapping("/")
+    @CircuitBreaker(name = "inventory", fallbackMethod = "fallback")
     public ResponseEntity<?> createLoan(@RequestBody LoanRequestDTO loanRequest) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(loanService.createLoan(loanRequest));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(new ErrorDTO(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(loanService.createLoan(loanRequest));
+    }
+
+    public ResponseEntity<?> fallback(Exception e) {
+        log.error("Fallback method called", e);
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorDTO(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE));
     }
 
     @PutMapping("/{id}")
