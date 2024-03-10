@@ -8,12 +8,15 @@ import org.ratnesh.inventoryservice.exception.BookNotFoundException;
 import org.ratnesh.inventoryservice.repository.InventoryRepository;
 import org.ratnesh.inventoryservice.service.InventoryService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @RequiredArgsConstructor
+
 public class InventoryServiceImpl implements InventoryService {
 
     private final InventoryRepository inventoryRepository;
+    private final WebClient.Builder webClientBuilder;
 
     @Override
     public Long getAvailability(String bookId) throws BookNotFoundException {
@@ -33,7 +36,25 @@ public class InventoryServiceImpl implements InventoryService {
         if (inventoryRepository.findByBookId(request.getBookId()).isPresent()) {
             throw new BookEntryAlreadyExistsException();
         }
+        checkBookExists(request.getBookId());
         var inventory = new Inventory(request);
         inventoryRepository.save(inventory);
+    }
+
+    @Override
+    public void deleteBookFromInventory(String bookId) {
+        if (inventoryRepository.findByBookId(bookId).isPresent())
+            inventoryRepository.deleteByBookId(bookId);
+    }
+
+    private void checkBookExists(String bookId) {
+        var bookExists = webClientBuilder.build().get()
+                .uri("http://book-service/api/book/exists/" + bookId)
+                .retrieve()
+                .bodyToMono(Boolean.class)
+                .block();
+        if (bookExists == null) {
+            throw new BookNotFoundException();
+        }
     }
 }

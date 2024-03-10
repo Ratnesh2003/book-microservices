@@ -14,4 +14,7 @@ public interface BookService {
 
     BookResponse getBookById(String id);
 
+    void deleteBookById(String id);
+
+    boolean existsBookById(String bookId);
 }

@@ -5,6 +5,7 @@ import org.ratnesh.loanservice.dto.InventoryRequestDTO;
 import org.ratnesh.loanservice.dto.LoanRequestDTO;
 import org.ratnesh.loanservice.dto.LoanResponseDTO;
 import org.ratnesh.loanservice.entity.Loan;
+import org.ratnesh.loanservice.event.EventType;
 import org.ratnesh.loanservice.event.LoanNotification;
 import org.ratnesh.loanservice.exception.BookNotAvailableException;
 import org.ratnesh.loanservice.exception.LoanNotFoundException;
@@ -28,12 +29,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public String createLoan(LoanRequestDTO request) {
         var loan = new Loan(request);
-        var bookCount = webClientBuilder.build().get()
-                .uri("http://inventory-service/api/inventory/" + request.getBookId() + "/availability")
-                .retrieve()
-                .bodyToMono(Long.class)
-                .block();
-
+        var bookCount = getBookCount(request.getBookId());
         assert bookCount != null;
         if (bookCount == 0)
             throw new BookNotAvailableException();
@@ -41,7 +37,7 @@ public class LoanServiceImpl implements LoanService {
         updateBookCount(request.getBookId(), bookCount - 1);
 
         loan = loanRepository.save(loan);
-        kafkaTemplate.send("loan-notification", new LoanNotification(loan));
+        kafkaTemplate.send("loan-notification", new LoanNotification(loan, EventType.LOAN_CREATED, "Loan Created"));
         return loan.getId();
     }
 
@@ -56,7 +52,13 @@ public class LoanServiceImpl implements LoanService {
         var loan = loanRepository.findById(id).orElseThrow(LoanNotFoundException::new);
         loan.setReturned(true);
         loan.setReturnDateTime(LocalDateTime.now());
+
+        var bookCount = getBookCount(loan.getBookId());
+        assert bookCount != null;
+        updateBookCount(loan.getBookId(), bookCount + 1);
         loanRepository.save(loan);
+
+        kafkaTemplate.send("loan-notification", new LoanNotification(loan, EventType.LOAN_RETURNED, "Loan Returned"));
     }
 
     @Override
@@ -76,6 +78,14 @@ public class LoanServiceImpl implements LoanService {
                 .bodyValue(new InventoryRequestDTO(bookId, count))
                 .retrieve()
                 .bodyToMono(Void.class)
+                .block();
+    }
+
+    private Long getBookCount(String bookId) {
+        return webClientBuilder.build().get()
+                .uri("http://inventory-service/api/inventory/" + bookId + "/availability")
+                .retrieve()
+                .bodyToMono(Long.class)
                 .block();
     }
 }

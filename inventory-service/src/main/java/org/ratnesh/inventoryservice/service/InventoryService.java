@@ -11,4 +11,6 @@ public interface InventoryService {
     void updateAvailability(InventoryRequestDTO request);
 
     void addBookInInventory(InventoryRequestDTO request);
+
+    void deleteBookFromInventory(String bookId);
 }

@@ -10,6 +10,7 @@ import org.ratnesh.bookservice.exception.BookNotFoundException;
 import org.ratnesh.bookservice.repository.BookRepository;
 import org.ratnesh.bookservice.service.BookService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final WebClient.Builder webClientBuilder;
 
     @Override
     public String createBook(BookRequest request) {
@@ -44,6 +46,28 @@ public class BookServiceImpl implements BookService {
             throw new BookNotFoundException();
         }
         return bookRepository.findById(id).map(Book::toBookResponse).orElse(null);
+    }
+
+    @Override
+    public void deleteBookById(String id) {
+        if (!bookRepository.existsById(id)) {
+            throw new BookNotFoundException();
+        }
+        deleteBookFromInventory(id);
+        bookRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsBookById(String bookId) {
+        return bookRepository.existsById(bookId);
+    }
+
+    private void deleteBookFromInventory(String bookId) {
+        webClientBuilder.build().delete()
+                .uri("http://inventory-service/api/inventory/" + bookId)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
     }
 
 }

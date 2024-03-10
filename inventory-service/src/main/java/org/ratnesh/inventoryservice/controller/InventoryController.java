@@ -1,5 +1,6 @@
 package org.ratnesh.inventoryservice.controller;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ratnesh.inventoryservice.dto.ErrorDTO;
@@ -43,14 +44,26 @@ public class InventoryController {
     }
 
     @PostMapping("/")
+    @CircuitBreaker(name = "book", fallbackMethod = "addBookInInventoryFallback")
     public ResponseEntity<?> addBookInInventory(@RequestBody InventoryRequestDTO inventoryRequest) {
+        inventoryService.addBookInInventory(inventoryRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<?> addBookInInventoryFallback(Exception e) {
+        log.error("Fallback method called", e);
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorDTO(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE));
+    }
+
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<?> deleteBookFromInventory(@PathVariable String bookId) {
         try {
-            inventoryService.addBookInInventory(inventoryRequest);
+            inventoryService.deleteBookFromInventory(bookId);
             return ResponseEntity.ok().build();
-        } catch (BookEntryAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage(), HttpStatus.CONFLICT));
+        } catch (BookNotFoundException e) {
+            return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage(), HttpStatus.NOT_FOUND));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage(), HttpStatus.BAD_REQUEST));
+            return ResponseEntity.internalServerError().body(new ErrorDTO(e.getMessage(), HttpStatus.BAD_REQUEST));
         }
     }
 

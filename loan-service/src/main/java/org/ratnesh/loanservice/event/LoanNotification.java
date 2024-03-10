@@ -19,9 +19,9 @@ public class LoanNotification {
     private LocalDateTime issueDateTime;
     private LocalDateTime returnDateTime;
 
-    public LoanNotification(Loan loan) {
-        this.eventType = EventType.LOAN_CREATED;
-        this.eventMessage = "Loan created";
+    public LoanNotification(Loan loan, EventType eventType, String eventMessage) {
+        this.eventType = eventType;
+        this.eventMessage = eventMessage;
         this.loanId = loan.getId();
         this.userId = loan.getUserId();
         this.userName = loan.getUserName();
