@@ -6,27 +6,27 @@ scrape_configs:
   - job_name: 'book-service'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['192.168.163.121:8282'] #IP of local machine should be used here instead of localhost if using docker-compose on local machine.
+      - targets: ['192.168.1.46:8282'] #IP of local machine should be used here instead of localhost if using docker-compose on local machine.
         labels:
           application: 'Book Service Application'
 
   - job_name: 'inventory-service'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['192.168.163.121:8383'] #IP of local machine should be used here instead of localhost if using docker-compose on local machine.
+      - targets: ['192.168.1.46:8383'] #IP of local machine should be used here instead of localhost if using docker-compose on local machine.
         labels:
           application: 'Inventory Service Application'
 
   - job_name: 'loan-service'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['192.168.163.121:8484']
+      - targets: ['192.168.1.46:8484']
         labels:
           application: 'Loan Service Application'
 
   - job_name: 'notification-service'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['192.168.163.121:8585']
+      - targets: ['192.168.1.46:8585']
         labels:
           application: 'Notification Service Application'

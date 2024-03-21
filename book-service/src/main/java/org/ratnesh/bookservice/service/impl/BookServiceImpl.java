@@ -9,6 +9,9 @@ import org.ratnesh.bookservice.exception.BookAlreadyExistsException;
 import org.ratnesh.bookservice.exception.BookNotFoundException;
 import org.ratnesh.bookservice.repository.BookRepository;
 import org.ratnesh.bookservice.service.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -36,8 +39,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookResponse> getAllBook() {
-        return bookRepository.findAll().stream().map(Book::toBookResponse).toList();
+    public Page<BookResponse> getAllBook(int pageIndex, int pageSize, String sortBy, Sort.Direction sortDirection) {
+        var pageRequest = PageRequest.of(pageIndex, pageSize, sortDirection, sortBy);
+
+        return bookRepository.findAll(pageRequest).map(Book::toBookResponse);
     }
 
     @Override

@@ -2,6 +2,8 @@ package org.ratnesh.bookservice.service;
 
 import org.ratnesh.bookservice.dto.BookRequest;
 import org.ratnesh.bookservice.dto.BookResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
 public interface BookService {
     String createBook(BookRequest request);
 
-    List<BookResponse> getAllBook();
+    Page<BookResponse> getAllBook(int pageIndex, int pageSize, String sortBy, Sort.Direction sortDirection);
 
     BookResponse getBookById(String id);
 

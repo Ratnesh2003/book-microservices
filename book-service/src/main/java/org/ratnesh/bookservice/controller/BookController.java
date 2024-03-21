@@ -7,6 +7,7 @@ import org.ratnesh.bookservice.dto.BookRequest;
 import org.ratnesh.bookservice.dto.ErrorDTO;
 import org.ratnesh.bookservice.exception.BookNotFoundException;
 import org.ratnesh.bookservice.service.BookService;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +32,14 @@ public class BookController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllBook() {
+    public ResponseEntity<?> getAllBook(
+            @RequestParam(required = false, defaultValue = "0") Integer pageIndex,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false, defaultValue = "name") String sortBy,
+            @RequestParam(required = false, defaultValue = "ASC") Sort.Direction sortDirection
+    ) {
         try {
-            return ResponseEntity.ok(bookService.getAllBook());
+            return ResponseEntity.ok(bookService.getAllBook(pageIndex, pageSize, sortBy, sortDirection));
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(new ErrorDTO(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
         }
