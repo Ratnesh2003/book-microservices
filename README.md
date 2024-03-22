@@ -99,6 +99,8 @@ This section shows the screenshots of some of the additional tools and services 
     <img src="https://i.ibb.co/mRKXvXZ/zipkin-tracing.png" alt="tracing" width="49%">
 </p>
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 
 
@@ -120,7 +122,7 @@ This section shows the screenshots of some of the additional tools and services 
 - Run the following command to run the docker-compose file.
 
     ```sh
-  docker-compose up
+  docker-compose up -d
   ```
 - Now you can start each of the microservice using the following command inside each of the microservice directory.
 
@@ -183,6 +185,7 @@ _Complete documentation [here](https://github.com/Ratnesh2003/book-microservices
 - [ ] Add gmail smtp server for sending emails in notification service.
 - [ ] Add redis for caching and improving performance.
 - [ ] Add rate limiting for the API Gateway.
+- [ ] Add more events for the notification service.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
