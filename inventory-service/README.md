@@ -37,8 +37,8 @@ This is the Inventory Service for the Book Microservices application. It uses `P
 
 ## Screenshots
 <p align="center">
-<img src="https://i.ibb.co/JyK6SVY/inventory-book.png">
-<img src="https://i.ibb.co/68SL65b/availability.png">
+<img src="https://ucarecdn.com/46e71139-c58e-4bbb-bdd8-cc5fff926d2e/inventory_book.png">
+<img src="https://ucarecdn.com/52017c2d-bd29-472d-8a5b-61d90956d4db/availability.png">
 </p>
 
 ## Port

@@ -48,8 +48,8 @@ This is the Book Service for the Book Microservices application. It uses `MongoD
 
 ## Screenshots
 <p align="center">
-<img src="https://i.ibb.co/Myzqxps/create-book.png">
-<img src="https://i.ibb.co/6JXjrjG/fetch-all-books.png">
+<img src="https://ucarecdn.com/5d013626-b050-4a94-a50d-8b85b3248cbd/create_book.png" alt="create-book">
+<img src="https://ucarecdn.com/dda9acb7-d521-4ca4-bc83-b34ce999b02e/fetch_all_books.png" alt="fetch-all-books">
 </p>
 
 

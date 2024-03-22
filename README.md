@@ -2,7 +2,7 @@
 <div align="center" id="readme-top">
     
 <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://i.ibb.co/7SVSHcc/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://ucarecdn.com/96843f63-58bd-451e-8d6b-e42e599c6fd8/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h1 align="center">Book Microservices</h1>
@@ -87,16 +87,16 @@ Each of the microservice has its own `README` file with detailed information abo
 This section shows the screenshots of some of the additional tools and services used in the application.
 
 <p align="center">
-    <img src="https://i.ibb.co/gznpfB3/eureka.png" alt="eureka" width="49%">
-    <img src="https://i.ibb.co/n32vQdd/prometheus.png" alt="prometheus" width="49%">
+    <img src="https://ucarecdn.com/a709095a-dac6-4da7-8251-05da0dace471/eureka.png" alt="eureka" width="49%">
+    <img src="https://ucarecdn.com/994efa6a-5c7e-4061-9d12-94cee99d5fe2/prometheus.png" alt="prometheus" width="49%">
 </p>
 <p align="center">
-    <img src="https://i.ibb.co/Cn4vD9w/prometheus-2.png" alt="monitoring" width="49%">
-    <img src="https://i.ibb.co/hV8XSBp/keycloak.png" alt="keycloak" width="49%">
+    <img src="https://ucarecdn.com/64b5c4ca-9fef-47cd-af8d-c63b2161f5fb/prometheus_2.png" alt="monitoring" width="49%">
+    <img src="https://ucarecdn.com/bd65905e-c9da-4a95-a92c-33ffd340b77c/keycloak.png" alt="keycloak" width="49%">
 </p>
 <p align="center">
-    <img src="https://i.ibb.co/dGRK7cv/zipkin.png" alt="zipkin" width="49%">
-    <img src="https://i.ibb.co/mRKXvXZ/zipkin-tracing.png" alt="tracing" width="49%">
+    <img src="https://ucarecdn.com/a262aef3-37e9-4d93-81ef-e0722e053faa/zipkin.png" alt="zipkin" width="49%">
+    <img src="https://ucarecdn.com/cd5ffda3-73a6-4538-a1c9-58545483ec23/zipkin_tracing.png" alt="tracing" width="49%">
 </p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

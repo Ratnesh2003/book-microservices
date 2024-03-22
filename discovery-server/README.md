@@ -5,7 +5,7 @@ This is the Discovery Server for the Book Microservices application. It is built
 
 ## Screenshots
 <p align="center">
-<img src="https://i.ibb.co/gznpfB3/eureka.png">
+<img src="https://ucarecdn.com/a709095a-dac6-4da7-8251-05da0dace471/eureka.png" alt="eureka">
 </p>
 
 ## Port

@@ -42,8 +42,8 @@ This is the Loan Service for the Book Microservices application. It uses `Apache
 
 ## Screenshots
 <p align="center">
-<img src="https://i.ibb.co/drjw421/create-loan.png">
-<img src="https://i.ibb.co/0yNhgLj/get-all-loans.png">
+<img src="https://ucarecdn.com/cbf3b697-089b-4d0a-9b16-1cc3c2d536ba/create_loan.png" alt="create-loan">
+<img src="https://ucarecdn.com/d6a69093-006c-43d9-b25b-46546898d50b/get_all_loans.png" alt="get-all-loans">
 </p>
 
 ## Port
